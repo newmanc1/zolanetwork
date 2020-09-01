@@ -1,8 +1,0 @@
-1. scp
-2. chmod
-3. cd
-4. ping
-5. man
-6. ps
-7. exit
-8. interdiff
