@@ -138,22 +138,77 @@ def breadthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
     visited = set()
     path = {}
-    stack = util.Queue()
+    queue = util.Queue()
     for successor in problem.getSuccessors(problem.getStartState()):
-        stack.push(successor)
+        queue.push(successor)
         path[successor] = problem.getStartState();
     visited.add(problem.getStartState())
     
     #print(problem.getSuccessors(problem.getSuccessors(problem.getStartState())[0][0]))
-    while not stack.isEmpty():
-        state = stack.pop()
+    while not queue.isEmpty():
+        state = queue.pop()
         if not state[0] in visited:
             visited.add(state[0])
             
             
             
             if problem.isGoalState(state[0]):
-                print(state)
+                
+                ret = []
+                temp = state
+                ret.append(temp[1])
+
+
+                while True:
+                    if path[temp] is not problem.getStartState() and not path[temp] == problem.getStartState() and temp is not problem.getStartState():
+                        
+                        ret.append(path[temp][1])
+                       
+                        temp = path[temp]
+                        
+                    else:
+                        break
+                
+                
+                ret.reverse()
+                print(ret)
+                return ret
+            #state is in form
+            for successor in problem.getSuccessors(state[0]):
+                
+                if not successor[0] in visited:
+                    queue.push(successor)
+                    path[successor] = state;
+                    
+
+                
+
+    return []
+
+def uniformCostSearch(problem):
+    """Search the node of least total cost first."""
+    "*** YOUR CODE HERE ***"
+    visited = set()
+    path = {}
+    pathCost = {}
+    p_queue = util.PriorityQueue()
+    for successor in problem.getSuccessors(problem.getStartState()):
+        p_queue.update(successor, p_queue.total + successor[2])
+        path[successor] = problem.getStartState();
+        pathCost[successor] = p_queue.total + successor[2]
+    visited.add(problem.getStartState())
+    
+    
+    while not p_queue.isEmpty():
+        state = p_queue.pop()
+        if not state[0] in visited:
+            visited.add(state[0])
+            p_queue.total = pathCost[state]
+            
+            
+            
+            if problem.isGoalState(state[0]):
+                
                 ret = []
                 temp = state
                 ret.append(temp[1])
@@ -167,22 +222,19 @@ def breadthFirstSearch(problem):
                 ret.reverse()
                 
                 return ret
-            #state is in form
+            
             for successor in problem.getSuccessors(state[0]):
                 
                 if not successor[0] in visited:
-                    stack.push(successor)
+                    p_queue.update(successor, p_queue.total + successor[2])
                     path[successor] = state;
+                    pathCost[successor] = p_queue.total + successor[2]
                     
 
                 
 
     return []
-
-def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
 
 def nullHeuristic(state, problem=None):
     """
@@ -194,7 +246,54 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    visited = set()
+    path = {}
+    pathCost = {}
+    p_queue = util.PriorityQueue()
+    for successor in problem.getSuccessors(problem.getStartState()):
+        p_queue.update(successor, p_queue.total + successor[2] + heuristic(successor[0], problem))
+        path[successor] = problem.getStartState();
+        pathCost[successor] = p_queue.total + successor[2]
+    visited.add(problem.getStartState())
+    
+    
+    while not p_queue.isEmpty():
+        state = p_queue.pop()
+        if not state[0] in visited:
+            visited.add(state[0])
+            p_queue.total = pathCost[state]
+            
+            
+            
+            if problem.isGoalState(state[0]):
+                
+                ret = []
+                temp = state
+                ret.append(temp[1])
+                while path[temp] is not problem.getStartState() and not path[temp] == problem.getStartState() and temp is not problem.getStartState():
+                    
+                    ret.append(path[temp][1])
+                    
+                    temp = path[temp]
+                
+                
+                ret.reverse()
+                
+                return ret
+            
+            for successor in problem.getSuccessors(state[0]):
+                
+                if not successor[0] in visited:
+                    p_queue.update(successor, p_queue.total + successor[2] + heuristic(successor[0], problem))
+                    path[successor] = state;
+                    pathCost[successor] = p_queue.total + successor[2]
+                    
+
+                
+
+    return []
+
+    
 
 
 # Abbreviations
