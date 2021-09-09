@@ -488,7 +488,7 @@ def foodHeuristic(state, problem):
     use. For example, if you only want to count the walls once and store that
     value, try: problem.heuristicInfo['wallCount'] = problem.walls.count()
     Subsequent calls to this heuristic can access
-    problem.heuristicInfo['wallCount']
+    problem.heuristicInfo['wallCount'] 
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
