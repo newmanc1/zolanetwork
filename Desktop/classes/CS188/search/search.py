@@ -106,7 +106,7 @@ def depthFirstSearch(problem):
             
             
             if problem.isGoalState(state[0]):
-                print(state)
+                
                 ret = []
                 temp = state
                 ret.append(temp[1])
@@ -171,7 +171,7 @@ def breadthFirstSearch(problem):
                 
                 
                 ret.reverse()
-                print(ret)
+                
                 return ret
             #state is in form
             for successor in problem.getSuccessors(state[0]):
